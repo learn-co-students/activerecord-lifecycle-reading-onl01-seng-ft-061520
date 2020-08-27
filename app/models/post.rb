@@ -3,7 +3,26 @@ class Post < ActiveRecord::Base
   belongs_to :author
   validate :is_title_case 
 
+  # Added code
+  # before_save :make_title_case
+  # before_validation ensures that the title case is changed 1st to ensure it would pass and save
+  before_validation :make_title_case
+
+
+  # Sends email AFTER validation
+  before_save :email_author_about_post
+
+
+
+
+
   private
+
+  def email_author_about_post
+    # Add email code here
+    # For more information: https://guides.rubyonrails.org/action_mailer_basics.html
+
+  end
 
   def is_title_case
     if title.split.any?{|w|w[0].upcase != w[0]}
@@ -11,7 +30,11 @@ class Post < ActiveRecord::Base
     end
   end
 
+
+  
   def make_title_case
     self.title = self.title.titlecase
   end
+
+
 end
